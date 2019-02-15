@@ -56,9 +56,81 @@ def get_tsh_list(tshstring):
 
 
 def get_diagnosis(tshlist):
+    """Determines patient's diagnostic status.
+
+    If any values exceed 4.0, this is considered hypothyroidism, If any are
+    lower than 1.0, this is hyperthyroidism. Else normal thyroid function.
+
+    Args:
+        tshlist (list): List of TSH values
+
+    Returns:
+        string: diagnosis
+    """
+
     if tshlist[0] < 1.0:
         return "hyperthyroidism"
     elif tshlist[-1] > 4.0:
         return "hypothyroidism"
     else:
         return "normal thyroid function"
+
+
+def create_patient_dict(firstname, lastname, age, gender, diagnosis, tsh):
+    """Generates a dictionary of patient attributes.
+
+    Args:
+        firstname (string): Patient firstname
+        lastname (string): Patient lastname
+        age (int): Age (years)
+        gender (string): Patient gender
+        diagnosis (string): Diagnosis based on TSH values
+        tsh (list): List of TSH values
+
+    Returns:
+        dict: Patient dictionary.
+    """
+
+    patient_dict = {
+        "First Name": firstname,
+        "Last Name": lastname,
+        "Age": age,
+        "Gender": gender,
+        "Diagnosis": diagnosis,
+        "TSH": tsh,
+    }
+    return patient_dict
+
+
+def write_patient_dict(patient_dict, dirName):
+    """Write a patient dictionary to a json file in directory 'dirName'.
+
+    Args:
+        patient_dict (dict): Dictionary of patient information.
+        dirName (string): Name of directory in which to save json.
+    """
+
+    import json
+
+    firstname = patient_dict["First Name"]
+    lastname = patient_dict["Last Name"]
+    filename = dirName + '/' + firstname + '-' + lastname + '.json'
+    with open(filename, 'w') as out:
+        json.dump(patient_dict, out)
+    return
+
+
+def create_save_dir(dirName):
+    """Creates the directory within the current working directory in which
+    the patient profile jsons will be saved.
+
+    Args:
+        dirName (string): Name of directory.
+    """
+
+    import os
+    if not os.path.exists(dirName):
+        os.mkdir(dirName)
+        print("Directory ", dirName,  " Created ")
+    else:
+        print("Directory ", dirName,  " already exists")
