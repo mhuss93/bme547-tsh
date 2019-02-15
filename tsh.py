@@ -134,3 +134,50 @@ def create_save_dir(dirName):
         print("Directory ", dirName,  " Created ")
     else:
         print("Directory ", dirName,  " already exists")
+
+
+def file_at_end(fileobject):
+    """Checks if the next line reads 'END'.
+
+    This idicates that the end of the file has been reached.
+
+    Args:
+        fileobject (I/O object): I/O object with test_data.txt open.
+
+    Returns:
+        bool: Whethere the reader is at the end of the file.
+    """
+
+    last_pos = fileobject.tell()
+    line = fileobject.readline()
+    line = line.rstrip()
+    fileobject.seek(last_pos)
+    return line == 'END'
+
+
+def main():
+    """Main method.
+
+    Execution creates set of .json patient profiles in the directory
+    'profiles'. The directory 'profiles' will be created if it does
+    not already exist.
+    """
+
+    dirname = 'profiles'
+    try:
+        with open('test_data.txt', 'r') as infile:
+            create_save_dir(dirname)
+            while not file_at_end(infile):
+                firstname, lastname, age, gender, tsh = read_data(infile)
+                diagnosis = get_diagnosis(tsh)
+                patient = create_patient_dict(firstname, lastname, age, gender,
+                                              diagnosis, tsh)
+                write_patient_dict(patient, dirname)
+        print('All profiles written.')
+    except FileNotFoundError:
+        print('test_data.txt not found. Check it is in your current '
+              'working directory.')
+
+
+if __name__ == "__main__":
+    main()
