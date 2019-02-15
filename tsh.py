@@ -43,7 +43,7 @@ def get_tsh_list(tshstring):
     text in test_data.txt.
 
     Args:
-        tshstring (string): Line from test_data of form "TSH,value1,value2,...".
+        tshstring (string): Line from test_data of form "TSH,value1,value2,..."
 
     Returns:
         list: Ordered low to high list of tsh values.
