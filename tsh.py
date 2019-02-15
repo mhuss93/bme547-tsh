@@ -53,3 +53,12 @@ def get_tsh_list(tshstring):
     tsh_list = [float(i) for i in lst[1:]]
     tsh_list.sort()
     return tsh_list
+
+
+def get_diagnosis(tshlist):
+    if tshlist[0] < 1.0:
+        return "hyperthyroidism"
+    elif tshlist[-1] > 4.0:
+        return "hypothyroidism"
+    else:
+        return "normal thyroid function"
